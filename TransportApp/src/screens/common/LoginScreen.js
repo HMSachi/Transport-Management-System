@@ -17,10 +17,15 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) return Alert.alert('Validation', 'Please enter email and password.');
-    dispatch(LoginAction(email, password, role));
-    setTimeout(() => navigation.navigate(ROUTES[role] || 'CustomerDashboard'), 500);
+    try {
+      const data = await dispatch(LoginAction(email, password));
+      const fetchedRole = data.user.role;
+      navigation.navigate(ROUTES[fetchedRole] || 'CustomerDashboard');
+    } catch (err) {
+      // Error is handled by Redux state and displayed in the UI
+    }
   };
 
   return (

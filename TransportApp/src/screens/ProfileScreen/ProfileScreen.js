@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { GetProfileAction } from '../../actions/ProfileActions';
-import ScreenShell from '../common/ScreenShell';
+import RoleScreenTemplate from '../../components/RoleScreenTemplate';
 import { COLORS, TYPOGRAPHY } from '../common/theme';
 
 const ProfileScreen = ({ navigation }) => {
@@ -23,29 +23,30 @@ const ProfileScreen = ({ navigation }) => {
   ];
 
   return (
-    <ScreenShell>
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.heading}>Profile</Text>
-        <Text style={styles.subheading}>Your account details</Text>
-        <View style={styles.avatarCard}><Text style={styles.avatarText}>{profileData.name?.charAt(0).toUpperCase() || 'U'}</Text></View>
-        {isLoading ? <ActivityIndicator size="large" color={COLORS.primary} style={{ marginTop: 18 }} /> : (
-          <View style={styles.card}>
-            {infoRows.map((row) => (
-              <View key={row.label} style={styles.row}>
-                <View style={styles.rowIcon}><Text style={styles.rowIconText}>{row.icon}</Text></View>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.rowLabel}>{row.label}</Text>
-                  <Text style={styles.rowValue}>{row.value}</Text>
-                </View>
-              </View>
-            ))}
-          </View>
-        )}
-        <TouchableOpacity style={styles.primaryBtn} onPress={() => navigation.navigate(roleRoute)}>
-          <Text style={styles.primaryBtnText}>Back to Dashboard</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </ScreenShell>
+    <RoleScreenTemplate 
+      navigation={navigation}
+      user={{ name: profileData.name || 'John', date: profileData.role || 'User', avatar: 'https://i.pravatar.cc/150?img=11' }}
+      heroData={{
+        badge: 'PROFILE',
+        icon: 'account',
+        label1: 'NAME',
+        title: profileData.name || 'John Doe',
+        label2: 'EMAIL',
+        value1Icon: 'mail',
+        value1: profileData.email || 'johndoe@example.com',
+        label3: 'PHONE',
+        value2: profileData.phone || '+91 9876543210',
+        subValue2: 'Primary',
+        btnText: 'Edit Profile'
+      }}
+      quickActions={[
+        { icon: 'shield-account', label: 'Security', route: 'Security' },
+        { icon: 'credit-card', label: 'Payment', route: 'Payments' },
+        { icon: 'cog-outline', label: 'Settings', route: 'Settings' },
+        { icon: 'logout', label: 'Logout', onPress: () => navigation.navigate('Login') },
+      ]}
+      activeTab="Profile"
+    />
   );
 };
 

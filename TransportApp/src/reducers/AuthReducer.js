@@ -6,7 +6,7 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
   LOGOUT,
-} from '../constants/AuthConstants';
+} from '../actions/AuthActions';
 
 const initialState = {
   isLoading: false,

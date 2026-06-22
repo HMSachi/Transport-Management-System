@@ -4,29 +4,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchSettingsData } from '../../actions/SettingsActions';
 import RoleScreenTemplate from '../../components/RoleScreenTemplate';
 
-const PaymentsScreen = ({ navigation }) => {
+const SecurityScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { isLoading, paymentData } = useSelector((state) => state.settings);
+  const { isLoading, securityData } = useSelector((state) => state.settings);
 
   useEffect(() => {
-    dispatch(fetchSettingsData('payment'));
+    dispatch(fetchSettingsData('security'));
   }, [dispatch]);
 
-  if (isLoading || !paymentData) {
+  if (isLoading || !securityData) {
     return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><ActivityIndicator size="large" color="#ff7a00" /></View>;
   }
 
   return (
     <RoleScreenTemplate 
       navigation={navigation} 
-      dashboardTitle="Payments"
-      heroData={paymentData.heroData}
-      quickActions={paymentData.quickActions}
-      upcomingList={paymentData.upcomingList}
-      notifications={paymentData.notifications}
+      dashboardTitle="Security"
+      heroData={securityData.heroData}
+      quickActions={securityData.quickActions}
+      upcomingList={securityData.upcomingList}
+      notifications={securityData.notifications}
       activeTab="Profile"
     />
   );
 };
 
-export default PaymentsScreen;
+export default SecurityScreen;

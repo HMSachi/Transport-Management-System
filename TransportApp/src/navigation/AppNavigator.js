@@ -31,6 +31,9 @@ import BroadcastScreen from '../screens/admin/BroadcastScreen';
 import ActivityLogsScreen from '../screens/admin/ActivityLogsScreen';
 import ComplaintsScreen from '../screens/admin/ComplaintsScreen';
 
+import SettingsScreen from '../screens/common/SettingsScreen';
+import SecurityScreen from '../screens/common/SecurityScreen';
+
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => (
@@ -40,6 +43,8 @@ const AppNavigator = () => (
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="Settings" component={SettingsScreen} />
+      <Stack.Screen name="Security" component={SecurityScreen} />
       <Stack.Screen name="CustomerDashboard" component={CustomerDashboardScreen} />
       <Stack.Screen name="Routes" component={RoutesScreen} />
       <Stack.Screen name="Booking" component={BookingScreen} />

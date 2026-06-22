@@ -1,23 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { View, ActivityIndicator } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchDashboardData } from '../../actions/DashboardActions';
 import RoleScreenTemplate from '../../components/RoleScreenTemplate';
 
-const AdminDashboardScreen = () => (
-  <RoleScreenTemplate
-    title="Admin Dashboard"
-    subtitle="Monitor buses, drivers, passengers, and system activity."
-    cards={[
-      { icon: 'B', label: 'Buses', value: '24' },
-      { icon: 'D', label: 'Drivers', value: '14' },
-      { icon: 'P', label: 'Passengers', value: '186' },
-      { icon: 'L', label: 'Logs', value: '48' },
-    ]}
-    listTitle="Administration"
-    listItems={[
-      { icon: '>', title: 'Bus Management', subtitle: 'Manage fleet records' },
-      { icon: '>', title: 'Driver Management', subtitle: 'Update driver details' },
-      { icon: '>', title: 'Live Monitoring', subtitle: 'Track operations live' },
-    ]}
-  />
-);
+const AdminDashboardScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const { isLoading, data } = useSelector((state) => state.dashboard);
+
+  useEffect(() => {
+    dispatch(fetchDashboardData('admin'));
+  }, [dispatch]);
+
+  if (isLoading || !data) {
+    return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><ActivityIndicator size="large" color="#ff7a00" /></View>;
+  }
+
+  return (
+    <RoleScreenTemplate 
+      navigation={navigation} 
+      dashboardTitle="Admin Dashboard"
+      heroData={data.heroData}
+      quickActions={data.quickActions}
+      upcomingList={data.upcomingList}
+      notifications={data.notifications}
+      activeTab="Home"
+    />
+  );
+};
 
 export default AdminDashboardScreen;
