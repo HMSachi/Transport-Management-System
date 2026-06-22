@@ -6,7 +6,7 @@ import RoleScreenTemplate from '../../components/RoleScreenTemplate';
 
 const AdminDashboardScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { isLoading, data } = useSelector((state) => state.dashboard);
+  const { isLoading, data, title } = useSelector((state) => state.dashboard);
 
   useEffect(() => {
     dispatch(fetchDashboardData('admin'));
@@ -19,7 +19,7 @@ const AdminDashboardScreen = ({ navigation }) => {
   return (
     <RoleScreenTemplate 
       navigation={navigation} 
-      dashboardTitle="Admin Dashboard"
+      dashboardTitle={title || "Admin Dashboard"}
       heroData={data.heroData}
       quickActions={data.quickActions}
       upcomingList={data.upcomingList}

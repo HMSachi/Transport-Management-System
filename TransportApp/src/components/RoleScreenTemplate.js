@@ -1,21 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
-
-const COLORS = {
-  primary: '#ff7a00',
-  primaryLight: '#fff0e6',
-  white: '#ffffff',
-  text: '#1f2937',
-  muted: '#6b7280',
-  border: '#f3f4f6',
-  success: '#10b981',
-  successLight: '#d1fae5',
-  danger: '#ef4444',
-  dangerLight: '#fee2e2',
-};
+import { useSelector } from 'react-redux';
 
 const RoleScreenTemplate = ({ 
   navigation, 
@@ -27,9 +15,12 @@ const RoleScreenTemplate = ({
   notifications = [],
   activeTab = 'Home'
 }) => {
+  const { colors } = useSelector(state => state.theme);
+  const styles = useMemo(() => getStyles(colors), [colors]);
+
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <StatusBar style="light" backgroundColor={COLORS.primary} />
+      <StatusBar style="light" backgroundColor={colors.primary} />
       <View style={styles.mainContainer}>
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
           
@@ -38,12 +29,13 @@ const RoleScreenTemplate = ({
             <View style={styles.headerLeft}>
               <Image source={{ uri: user.avatar }} style={styles.avatar} />
               <View style={styles.headerTextWrap}>
+                {dashboardTitle && <Text style={styles.dashboardHeading}>{dashboardTitle.toUpperCase()}</Text>}
                 <Text style={styles.greeting}>Hello, {user.name}</Text>
-                <Text style={styles.dateText}>{dashboardTitle || user.date}</Text>
+                <Text style={styles.dateText}>{user.date}</Text>
               </View>
             </View>
             <TouchableOpacity style={styles.iconBtn}>
-              <Feather name="calendar" size={20} color={COLORS.primary} />
+              <Feather name="calendar" size={20} color={colors.primary} />
             </TouchableOpacity>
           </View>
 
@@ -54,7 +46,7 @@ const RoleScreenTemplate = ({
                 <View style={styles.badge}>
                   <Text style={styles.badgeText}>{heroData.badge}</Text>
                 </View>
-                <MaterialCommunityIcons name={heroData.icon || 'truck-fast'} size={24} color={COLORS.white} />
+                <MaterialCommunityIcons name={heroData.icon || 'truck-fast'} size={24} color={colors.white} />
               </View>
 
               <View style={styles.heroMiddle}>
@@ -68,7 +60,7 @@ const RoleScreenTemplate = ({
                 <View style={styles.heroCol}>
                   <Text style={styles.heroLabel}>{heroData.label2}</Text>
                   <View style={styles.heroRow}>
-                    {heroData.value1Icon && <Feather name={heroData.value1Icon} size={14} color={COLORS.white} style={{ marginRight: 6 }} />}
+                    {heroData.value1Icon && <Feather name={heroData.value1Icon} size={14} color={colors.white} style={{ marginRight: 6 }} />}
                     <Text style={styles.heroValue}>{heroData.value1}</Text>
                   </View>
                 </View>
@@ -105,7 +97,7 @@ const RoleScreenTemplate = ({
                     }}
                   >
                     <View style={styles.actionIconWrap}>
-                      <MaterialCommunityIcons name={action.icon} size={24} color={COLORS.primary} />
+                      <MaterialCommunityIcons name={action.icon} size={24} color={colors.primary} />
                     </View>
                     <Text style={styles.actionLabel}>{action.label}</Text>
                   </TouchableOpacity>
@@ -132,7 +124,7 @@ const RoleScreenTemplate = ({
                     <Text style={styles.listTitle}>{item.title}</Text>
                     <Text style={styles.listSubtitle}>{item.subtitle}</Text>
                   </View>
-                  <Feather name="chevron-right" size={20} color={COLORS.muted} />
+                  <Feather name="chevron-right" size={20} color={colors.muted} />
                 </TouchableOpacity>
               ))}
             </View>
@@ -145,8 +137,8 @@ const RoleScreenTemplate = ({
               
               {notifications.map((notif, idx) => (
                 <TouchableOpacity key={idx} style={styles.listCard}>
-                  <View style={[styles.iconCircle, { backgroundColor: notif.type === 'success' ? COLORS.successLight : COLORS.dangerLight }]}>
-                    <Feather name={notif.icon} size={20} color={notif.type === 'success' ? COLORS.success : COLORS.danger} />
+                  <View style={[styles.iconCircle, { backgroundColor: notif.type === 'success' ? colors.successLight : colors.dangerLight }]}>
+                    <Feather name={notif.icon} size={20} color={notif.type === 'success' ? colors.success : colors.danger} />
                   </View>
                   <View style={styles.listBody}>
                     <Text style={styles.listTitle}>{notif.title}</Text>
@@ -182,7 +174,7 @@ const RoleScreenTemplate = ({
                 <Feather 
                   name={tab.icon} 
                   size={24} 
-                  color={isActive ? COLORS.primary : COLORS.muted} 
+                  color={isActive ? colors.primary : colors.muted} 
                   style={{ marginBottom: 4 }}
                 />
                 <Text style={[styles.tabLabel, isActive && styles.tabLabelActive]}>
@@ -197,14 +189,15 @@ const RoleScreenTemplate = ({
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (COLORS) => StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: COLORS.primary },
-  mainContainer: { flex: 1, backgroundColor: '#fcfcfc' },
+  mainContainer: { flex: 1, backgroundColor: COLORS.background || '#fcfcfc' },
   content: { padding: 20, paddingBottom: 100 },
   
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 },
   headerLeft: { flexDirection: 'row', alignItems: 'center' },
   avatar: { width: 44, height: 44, borderRadius: 22, marginRight: 12 },
+  dashboardHeading: { fontSize: 11, fontFamily: 'System', fontWeight: '700', color: COLORS.muted, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 2 },
   greeting: { fontSize: 18, fontFamily: 'System', fontWeight: '600', color: COLORS.primary },
   dateText: { fontSize: 12, fontFamily: 'System', fontWeight: '400', color: COLORS.muted, marginTop: 2 },
   iconBtn: { width: 40, height: 40, borderRadius: 12, backgroundColor: COLORS.primaryLight, justifyContent: 'center', alignItems: 'center' },
@@ -230,8 +223,8 @@ const styles = StyleSheet.create({
   sectionTitle: { fontSize: 18, fontWeight: '600', color: COLORS.text, marginBottom: 16 },
   seeAll: { fontSize: 14, fontWeight: '600', color: COLORS.primary, marginBottom: 16 },
 
-  actionsGrid: { flexDirection: 'row', justifyContent: 'space-between' },
-  actionSquare: { width: '22%', backgroundColor: COLORS.primaryLight, borderRadius: 16, paddingVertical: 14, alignItems: 'center' },
+  actionsGrid: { flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap' },
+  actionSquare: { width: '22%', backgroundColor: COLORS.primaryLight, borderRadius: 16, paddingVertical: 14, alignItems: 'center', marginBottom: 10 },
   actionIconWrap: { marginBottom: 8 },
   actionLabel: { fontSize: 12, fontWeight: '600', color: COLORS.primary },
 

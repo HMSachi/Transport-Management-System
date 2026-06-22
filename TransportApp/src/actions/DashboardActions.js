@@ -1,8 +1,9 @@
 import DashboardService from '../services/DashboardService';
-
-export const FETCH_DASHBOARD_REQUEST = 'FETCH_DASHBOARD_REQUEST';
-export const FETCH_DASHBOARD_SUCCESS = 'FETCH_DASHBOARD_SUCCESS';
-export const FETCH_DASHBOARD_FAILURE = 'FETCH_DASHBOARD_FAILURE';
+import {
+  FETCH_DASHBOARD_REQUEST,
+  FETCH_DASHBOARD_SUCCESS,
+  FETCH_DASHBOARD_FAILURE,
+} from '../constants/DashboardConstants';
 
 export const fetchDashboardData = (role) => {
   return async (dispatch) => {
@@ -16,9 +17,16 @@ export const fetchDashboardData = (role) => {
       } else {
         data = await DashboardService.fetchCustomerData();
       }
-      dispatch({ type: FETCH_DASHBOARD_SUCCESS, payload: data });
+      dispatch({ 
+        type: FETCH_DASHBOARD_SUCCESS, 
+        payload: { 
+          data, 
+          title: role === 'admin' ? 'Admin Dashboard' : role === 'driver' ? 'Driver Dashboard' : 'Customer Dashboard' 
+        } 
+      });
     } catch (error) {
       dispatch({ type: FETCH_DASHBOARD_FAILURE, payload: error.message });
     }
   };
 };
+

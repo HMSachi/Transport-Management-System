@@ -1,4 +1,9 @@
-import { FETCH_SETTINGS_REQUEST, FETCH_SETTINGS_SUCCESS, FETCH_SETTINGS_FAILURE } from '../actions/SettingsActions';
+import {
+  FETCH_SETTINGS_REQUEST,
+  FETCH_SETTINGS_SUCCESS,
+  FETCH_SETTINGS_FAILURE,
+} from '../constants/SettingsConstants';
+
 
 const initialState = {
   isLoading: false,

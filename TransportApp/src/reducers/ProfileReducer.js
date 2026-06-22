@@ -2,7 +2,8 @@ import {
   GET_PROFILE_REQUEST,
   GET_PROFILE_SUCCESS,
   GET_PROFILE_FAILURE,
-} from '../actions/ProfileActions';
+} from '../constants/ProfileConstants';
+
 
 const initialState = {
   isLoading: false,

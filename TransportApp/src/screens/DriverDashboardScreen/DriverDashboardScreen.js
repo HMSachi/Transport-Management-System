@@ -6,7 +6,7 @@ import RoleScreenTemplate from '../../components/RoleScreenTemplate';
 
 const DriverDashboardScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { isLoading, data } = useSelector((state) => state.dashboard);
+  const { isLoading, data, title } = useSelector((state) => state.dashboard);
 
   useEffect(() => {
     dispatch(fetchDashboardData('driver'));
@@ -19,7 +19,7 @@ const DriverDashboardScreen = ({ navigation }) => {
   return (
     <RoleScreenTemplate 
       navigation={navigation} 
-      dashboardTitle="Driver Dashboard"
+      dashboardTitle={title || "Driver Dashboard"}
       heroData={data.heroData}
       quickActions={data.quickActions}
       upcomingList={data.upcomingList}
